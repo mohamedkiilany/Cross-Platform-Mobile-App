@@ -8,7 +8,13 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cart Screen'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text(
+          'Cart',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
           return ListView.builder(
@@ -39,25 +45,33 @@ class CartScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                trailing: ElevatedButton(
+                trailing: IconButton(
                   onPressed: () {
                     cartProvider.removeFromCart(cartProvider.cartItems[index]);
                   },
-                  child: const Text('Remove from Cart'),
+                  icon: Icon(Icons.delete, color: Colors.red, size: 35),
                 ),
               );
             },
           );
         },
       ),
-      bottomNavigationBar: ElevatedButton(
-        onPressed: () {
-          context.read<CartProvider>().clearCart();
-        },
-        child: const Text(
-          'Clear Cart',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Total: \$${context.watch<CartProvider>().cartItems.fold<double>(0, (total, product) => total + product.price)}',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 15,),
+          ElevatedButton(
+            onPressed: () {
+              context.read<CartProvider>().clearCart();
+            },
+            child: const Text('Clear Cart',style: TextStyle(fontSize: 20),),
+          ),
+          SizedBox(height: 100),
+        ],
       ),
     );
   }
