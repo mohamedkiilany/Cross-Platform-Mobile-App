@@ -15,6 +15,12 @@ class TaskCubit extends Cubit<List<Object>> {
     emit(newList);
   }
 
+  void deleteCompletedTask(Taskcomplete completedTasks) {
+    final newList = [...state];
+    newList.remove(completedTasks);
+    emit(newList);
+  }
+
   void deleteAll() {
     emit([]);
   }

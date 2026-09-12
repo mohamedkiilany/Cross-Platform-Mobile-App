@@ -121,8 +121,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ),
             const SizedBox(height: 5),
             SizedBox(
-              width: 300,
-              height: 50,
+              width: 370,
+              height: 65,
               child: ElevatedButton.icon(
                 onPressed: () {
                   if (titleController.text.isEmpty ||
@@ -170,8 +170,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 icon: const Icon(Icons.add, size: 32),
                 label: const Text('Add Task'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: _purple,
-                  backgroundColor: const Color(0xFFF8F3FA),
+                  foregroundColor: Color.fromARGB(255, 69, 62, 156),
+                  backgroundColor: Color.fromARGB(255, 233, 233, 253),
                   elevation: 2,
 
                   textStyle: const TextStyle(
@@ -181,7 +181,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 7),
+            const SizedBox(height: 25),
             Container(
               width: 300,
               // height: 200,
@@ -192,8 +192,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x33000000),
-                    blurRadius: 6,
-                    offset: Offset(0, 7),
+                    blurRadius: 10,
+                    offset: Offset(0.2, 9),
                   ),
                 ],
               ),
@@ -201,50 +201,86 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 children: [
                   const Icon(Icons.checklist_rounded, color: _blue, size: 35),
                   const SizedBox(height: 3),
-                  const Text(
-                    'Tasks Added',
-                    style: TextStyle(color: _ink, fontSize: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BlocBuilder<TaskCubit, List<Object>>(
+                        builder: (context, state) {
+                          final pendingTasks = state.whereType<Task>().toList();
+                          return Text(
+                            pendingTasks.length.toString(),
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 4, 3, 22),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(width: 5),
+                      const Text(
+                        'Tasks Added',
+                        style: TextStyle(
+                          color: _ink,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 2),
-                  BlocBuilder<TaskCubit, List<Object>>(
-                    builder: (context, state) {
-                      final pendingTasks = state.whereType<Task>().toList();
-                      return Text(
-                        pendingTasks.length.toString(),
-                        style: const TextStyle(
-                          color: _ink,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w700,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BlocBuilder<TaskCubit, List<Object>>(
+                        builder: (context, state) {
+                          final completeTasks = state
+                              .whereType<Taskcomplete>()
+                              .toList();
+                          return Text(
+                            completeTasks.length.toString(),
+                            style: const TextStyle(
+                              color: Color(0xff4F46E5),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "completed today",
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 79, 79, 79),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return MyTasksPage();
+                          },
                         ),
                       );
                     },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "View Tasks",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        const SizedBox(width: 5),
+                        const Icon(Icons.chevron_right, size: 25),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 390,
-              height: 60,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const MyTasksPage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.view_list_rounded, size: 25),
-                label: const Text('View All Tasks'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: _purple,
-                  side: const BorderSide(color: Color(0xFF817C85), width: 1.9),
-
-                  textStyle: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
               ),
             ),
           ],

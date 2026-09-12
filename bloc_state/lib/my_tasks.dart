@@ -55,7 +55,10 @@ class MyTasksPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final taskItem = pendingTasks[index];
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
                         child: Material(
                           elevation: 3,
                           borderRadius: BorderRadius.circular(25),
@@ -69,13 +72,13 @@ class MyTasksPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               leading: const CircleAvatar(
-                                radius: 40,
+                                radius: 25,
                                 child: Icon(Icons.hourglass_empty),
                               ),
                               title: Text(
                                 taskItem.title,
                                 style: const TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -83,6 +86,7 @@ class MyTasksPage extends StatelessWidget {
                                 taskItem.description,
                                 style: const TextStyle(fontSize: 18),
                               ),
+
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -135,7 +139,7 @@ class MyTasksPage extends StatelessWidget {
                   return Row(
                     children: [
                       const Icon(Icons.check_box),
-                      const SizedBox(width: 3),
+                      const SizedBox(width: 8),
                       const Text(
                         "Completed Tasks ",
                         style: TextStyle(
@@ -143,7 +147,7 @@ class MyTasksPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 3),
                       CircleAvatar(
                         child: Text(completedTasks.length.toString()),
                       ),
@@ -161,7 +165,10 @@ class MyTasksPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final completedItem = completedTasks[index];
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
                         child: Material(
                           elevation: 3,
                           borderRadius: BorderRadius.circular(25),
@@ -171,7 +178,7 @@ class MyTasksPage extends StatelessWidget {
                               vertical: 10,
                             ),
                             child: ListTile(
-                              leading: Icon(Icons.check_circle),
+                              leading: Icon(Icons.check_circle, size: 35),
                               title: Text(
                                 completedItem.title,
                                 style: const TextStyle(
@@ -186,7 +193,17 @@ class MyTasksPage extends StatelessWidget {
                               ),
                               trailing: Checkbox(
                                 value: true,
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  context.read<TaskCubit>().addTask(
+                                    Task(
+                                      title: completedItem.title,
+                                      description: completedItem.description,
+                                    ),
+                                  );
+                                  context.read<TaskCubit>().deleteCompletedTask(
+                                    completedItem,
+                                  );
+                                },
                               ),
                             ),
                           ),
