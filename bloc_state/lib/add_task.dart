@@ -14,11 +14,9 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   static const _background = Color(0xFFFFF8FF);
   static const _ink = Color(0xFF211F25);
-  static const _purple = Color(0xFF6F52B5);
   static const _blue = Color(0xFF2196F3);
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  // int taskCount = 100;
 
   @override
   void dispose() {

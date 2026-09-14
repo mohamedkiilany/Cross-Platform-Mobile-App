@@ -4,6 +4,11 @@ class Product {
   final double price;
 
   Product({required this.name, required this.id, required this.price});
+ 
+
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'name': name, 'price': price};
+  }
 }
 
 final List<Product> items = [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectapp/cart_db.dart';
 import 'package:projectapp/cart_provider.dart';
 import 'package:projectapp/cart_screen.dart';
 import 'package:projectapp/model.dart';
@@ -14,6 +15,7 @@ class ItemsScreen extends StatefulWidget {
 class _ItemsScreenState extends State<ItemsScreen> {
   bool isAddedToCart = false;
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,22 +30,22 @@ class _ItemsScreenState extends State<ItemsScreen> {
             child: Badge(
               label: Text(
                 context.watch<CartProvider>().cartItems.length.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white
-                ),
+                style: TextStyle(fontSize: 15, color: Colors.white),
               ),
-              isLabelVisible: context.watch<CartProvider>().cartItems.isNotEmpty,
+              isLabelVisible: context
+                  .watch<CartProvider>()
+                  .cartItems
+                  .isNotEmpty,
               child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const CartScreen()),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart,size: 30),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
+                  );
+                },
+                icon: const Icon(Icons.shopping_cart, size: 30),
+              ),
             ),
-            ),
-          )
+          ),
         ],
       ),
       body: ListView.builder(
@@ -71,6 +73,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             trailing: ElevatedButton(
               onPressed: () {
                 context.read<CartProvider>().addToCart(items[index]);
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("${items[index].name} added to cart"),
