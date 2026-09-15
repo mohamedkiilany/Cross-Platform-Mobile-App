@@ -33,9 +33,11 @@ class MyTasksPage extends StatelessWidget {
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 8),
-                BlocBuilder<TaskCubit, List<Object>>(
+                BlocBuilder<TaskCubit, List<Task>>(
                   builder: (context, state) {
-                    final pendingTasks = state.whereType<Task>().toList();
+                    final pendingTasks = state
+                        .where((task) => !task.isCompleted)
+                        .toList();
                     return CircleAvatar(
                       child: Text(pendingTasks.length.toString()),
                     );
@@ -46,9 +48,11 @@ class MyTasksPage extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            BlocBuilder<TaskCubit, List<Object>>(
+            BlocBuilder<TaskCubit, List<Task>>(
               builder: (context, state) {
-                final pendingTasks = state.whereType<Task>().toList();
+                final pendingTasks = state
+                    .where((task) => !task.isCompleted)
+                    .toList();
                 return Expanded(
                   child: ListView.builder(
                     itemCount: pendingTasks.length,
@@ -102,19 +106,14 @@ class MyTasksPage extends StatelessWidget {
                                     ),
                                   ),
                                   Checkbox(
-                                    value: false,
+                                    value: taskItem.isCompleted,
                                     onChanged: (value) {
-                                      context
-                                          .read<TaskCubit>()
-                                          .addToCompletedTask(
-                                            Taskcomplete(
-                                              title: taskItem.title,
-                                              description: taskItem.description,
-                                            ),
-                                          );
-                                      context.read<TaskCubit>().deleteTask(
-                                        taskItem,
-                                      );
+                                      if (value != null) {
+                                        context.read<TaskCubit>().setTaskCompleted(
+                                          taskItem,
+                                          value,
+                                        );
+                                      }
                                     },
                                   ),
                                 ],
@@ -131,10 +130,10 @@ class MyTasksPage extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: BlocBuilder<TaskCubit, List<Object>>(
+              child: BlocBuilder<TaskCubit, List<Task>>(
                 builder: (context, state) {
                   final completedTasks = state
-                      .whereType<Taskcomplete>()
+                      .where((task) => task.isCompleted)
                       .toList();
                   return Row(
                     children: [
@@ -156,9 +155,11 @@ class MyTasksPage extends StatelessWidget {
                 },
               ),
             ),
-            BlocBuilder<TaskCubit, List<Object>>(
+            BlocBuilder<TaskCubit, List<Task>>(
               builder: (context, state) {
-                final completedTasks = state.whereType<Taskcomplete>().toList();
+                final completedTasks = state
+                    .where((task) => task.isCompleted)
+                    .toList();
                 return Expanded(
                   child: ListView.builder(
                     itemCount: completedTasks.length,
@@ -192,17 +193,14 @@ class MyTasksPage extends StatelessWidget {
                                 style: const TextStyle(fontSize: 18),
                               ),
                               trailing: Checkbox(
-                                value: true,
+                                value: completedItem.isCompleted,
                                 onChanged: (value) {
-                                  context.read<TaskCubit>().addTask(
-                                    Task(
-                                      title: completedItem.title,
-                                      description: completedItem.description,
-                                    ),
-                                  );
-                                  context.read<TaskCubit>().deleteCompletedTask(
-                                    completedItem,
-                                  );
+                                  if (value != null) {
+                                    context.read<TaskCubit>().setTaskCompleted(
+                                      completedItem,
+                                      value,
+                                    );
+                                  }
                                 },
                               ),
                             ),

@@ -18,6 +18,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
+
+
   @override
   void dispose() {
     titleController.dispose();
@@ -148,6 +150,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   } else {
                     context.read<TaskCubit>().addTask(
                       Task(
+                        id: DateTime.now().microsecondsSinceEpoch.toString(),
                         title: titleController.text,
                         description: descriptionController.text,
                       ),
@@ -202,9 +205,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BlocBuilder<TaskCubit, List<Object>>(
+                      BlocBuilder<TaskCubit, List<Task>>(
                         builder: (context, state) {
-                          final pendingTasks = state.whereType<Task>().toList();
+                          final pendingTasks = state
+                              .where((task) => !task.isCompleted)
+                              .toList();
                           return Text(
                             pendingTasks.length.toString(),
                             style: const TextStyle(
@@ -230,10 +235,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BlocBuilder<TaskCubit, List<Object>>(
+                      BlocBuilder<TaskCubit, List<Task>>(
                         builder: (context, state) {
                           final completeTasks = state
-                              .whereType<Taskcomplete>()
+                              .where((task) => task.isCompleted)
                               .toList();
                           return Text(
                             completeTasks.length.toString(),

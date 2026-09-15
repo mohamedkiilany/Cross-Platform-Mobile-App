@@ -1,11 +1,20 @@
 class Task {
-  String title;
-  String description;
-  Task({required this.title, required this.description});
-}
+  final String id;
+  final String title;
+  final String description;
+  final bool isCompleted;
 
-class Taskcomplete {
-  String title;
-  String description;
-  Taskcomplete({required this.title, required this.description});
+  Task({
+    required this.id,
+    required this.title,
+    required this.description,
+    this.isCompleted = false,
+  });
+
+  Task copyWith({bool? isCompleted}) => Task(
+    id: id,
+    title: title,
+    description: description,
+    isCompleted: isCompleted ?? this.isCompleted,
+  );
 }
